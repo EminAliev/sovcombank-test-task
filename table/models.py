@@ -66,5 +66,4 @@ class ChangeLog(models.Model):
         verbose_name = 'Логи'
         verbose_name_plural = 'Логи'
 
-    def __str__(self):
-        return f'{self.id} - {self.phone_number}'
+    

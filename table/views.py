@@ -2,12 +2,13 @@ import csv
 from datetime import datetime
 
 import xlwt
+from django.db.models import Q
 from django.http import HttpResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterMixin
 
 from table.filters import DataFilter
-from table.models import Data
+from table.models import Data, ChangeLog
 
 
 class DataListView(ListView, FilterMixin):
@@ -15,6 +16,15 @@ class DataListView(ListView, FilterMixin):
     template_name = 'table.html'
     filterset_class = DataFilter
     context_object_name = 'dates'
+
+    def get_queryset(self):
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            qs = Data.objects.filter(Q(product__icontains=search_query) | Q(phone_number__icontains=search_query) | Q(
+                solution__icontains=search_query) | Q(comment__icontains=search_query))
+        else:
+            qs = Data.objects.all()
+        return qs
 
 
 class DataCreateView(CreateView):
