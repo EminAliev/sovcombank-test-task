@@ -28,9 +28,15 @@
                 <td>
                     {{ data.comment }}
                 </td>
+                <td>
+                    <a href="{% url 'update' data.pk %}">Изменить</a>
+                </td>
+                <td>
+                    <a href="{% url 'delete' data.pk %}">Удалить запись</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    
+
 {% endblock %}
