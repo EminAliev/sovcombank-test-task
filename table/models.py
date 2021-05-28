@@ -18,12 +18,12 @@ class Data(models.Model):
     ]
     date = models.DateTimeField('Дата заявки', auto_now_add=True)
     product = models.CharField('Продукт', max_length=20, choices=PRODUCT_CHOICES)
-    phone_number = models.CharField('Номер телефона',validators=[RegexValidator(
-            regex='^[0-9]{10}$',
-            message='Номер телефона должен быть в формате 0000000000'
-        )],
-        max_length=10,
-        help_text='Номер телефона в формате 0000000000')
+    phone_number = models.CharField('Номер телефона', validators=[RegexValidator(
+        regex='^[0-9]{10}$',
+        message='Номер телефона должен быть в формате 0000000000'
+    )],
+                                    max_length=10,
+                                    help_text='Номер телефона в формате 0000000000')
     solution = models.CharField('Решение', choices=SOLUTION_CHOICES, max_length=20, blank=True, null=True)
     comment = models.TextField('Комментарий', blank=True, null=True)
 
