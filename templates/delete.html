@@ -1,14 +1,14 @@
 {% include 'base.html' %}
- 
+
 {% block content %}
     <h1>Удаление заявки</h1>
     <form action="" method="post">{% csrf_token %}
-      <p>Заявка: </p>
+        <p>Заявка: </p>
         <p>Дата: {{ data.date }}</p>
         <p>Продукт: {{ data.product }}</p>
         <p>Номер телефона: {{ data.phone_number }}</p>
         <p>Решение: {{ data.solution }}</p>
         <p>Комментарий: {{ data.comment }}</p>
-      <input type="submit" value="Удалить" />
+        <input type="submit" value="Удалить"/>
     </form>
 {% endblock content %}
