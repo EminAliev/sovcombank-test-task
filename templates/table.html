@@ -38,4 +38,18 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div>
+        <form class="form-inline">
+            <label>Сортировка:</label>
+            <select class="form-select"  name="orderby">
+                <option value="date">Дата</option>
+                <option value="product">Продукт</option>
+                <option value="solution">Решение</option>
+                <option value="phone_number">Телефон</option>
+            </select>
+
+            <button type="submit" class="btn btn-outline-dark">Принять</button>
+        </form>
+    </div>
 {% endblock %}

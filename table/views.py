@@ -21,9 +21,12 @@ class DataListView(ListView, FilterMixin):
 
     def get_queryset(self):
         search_query = self.request.GET.get('search', '')
+        order_by = self.request.GET.get('orderby', '')
         if search_query:
             qs = Data.objects.filter(Q(product__icontains=search_query) | Q(phone_number__icontains=search_query) | Q(
                 solution__icontains=search_query) | Q(comment__icontains=search_query))
+        elif order_by:
+            qs = Data.objects.all().order_by((order_by))
         else:
             qs = Data.objects.all()
         return qs
