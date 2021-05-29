@@ -1,0 +1,17 @@
+{% include 'base.html' %}
+{% block content %}
+    <table>
+        <tbody>
+        <tr>
+            <th>Количество заявок</th>
+            <th>Месяц</th>
+        </tr>
+        {% for d in data %}
+            <tr>
+                <td>{{ d.month }}</td>
+                <td>{{ d.count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -4,11 +4,13 @@ from datetime import datetime
 import xlwt
 from django.db.models import Q
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterMixin
 
 from table.filters import DataFilter
-from table.models import Data, ChangeLog
+from table.models import Data
+from table.queries import count_data, last_data, client_approved
 
 
 class DataListView(ListView, FilterMixin):
@@ -96,3 +98,15 @@ def export_csv(request):
         writer.writerow([row[field] for field in fields])
 
     return response
+
+
+def count_month_view(request):
+    return render(request, 'count_month.html', {'data': count_data()})
+
+
+def last_data_view(request):
+    return render(request, 'last_data.html', {'data': last_data()})
+
+
+def client_approved_view(request):
+    return render(request, 'client_approved.html', {'data': client_approved()})
