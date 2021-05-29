@@ -8,15 +8,14 @@ from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterMixin
 
-from table.filters import DataFilter
 from table.models import Data
 from table.queries import count_data, last_data, client_approved
 
 
 class DataListView(ListView, FilterMixin):
+    """Отображение списка заявок с возможностью сортировки и поиска"""
     model = Data
     template_name = 'table.html'
-    filterset_class = DataFilter
     context_object_name = 'dates'
 
     def get_queryset(self):
@@ -33,6 +32,7 @@ class DataListView(ListView, FilterMixin):
 
 
 class DataCreateView(CreateView):
+    """Создание заявки"""
     model = Data
     template_name = 'create.html'
     success_url = '/'
@@ -40,6 +40,7 @@ class DataCreateView(CreateView):
 
 
 class DataUpdateView(UpdateView):
+    """Изменение заявки"""
     model = Data
     template_name = 'update.html'
     fields = ['product', 'phone_number', 'solution', 'comment']
@@ -47,12 +48,14 @@ class DataUpdateView(UpdateView):
 
 
 class DataDeleteView(DeleteView):
+    """Удаление заявки"""
     model = Data
     template_name = 'delete.html'
     success_url = '/'
 
 
 def export_xls(request):
+    """Функция экспорта таблицы в xls"""
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="data.xls"'
 
@@ -84,6 +87,7 @@ def export_xls(request):
 
 
 def export_csv(request):
+    """Функция экспорта таблицы в csv"""
     model_class = Data
     fields = [f.name for f in model_class._meta.fields]
 
@@ -104,12 +108,15 @@ def export_csv(request):
 
 
 def count_month_view(request):
+    """Отображение запроса, связанный с количеством заявок в каждом месяце"""
     return render(request, 'count_month.html', {'data': count_data()})
 
 
 def last_data_view(request):
+    """Отображение запроса, связанный с последним клиентом"""
     return render(request, 'last_data.html', {'data': last_data()})
 
 
 def client_approved_view(request):
+    """Отображение запроса, связанный с клиентами которые завели заявки на другой продукт после одобрения"""
     return render(request, 'client_approved.html', {'data': client_approved()})

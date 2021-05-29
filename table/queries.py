@@ -2,7 +2,7 @@ from django.db import connection
 
 
 def dictfetchall(cursor):
-    "Return all rows from a cursor as a dict"
+    """Возвращает все строки из курсора в виде словаря"""
     columns = [col[0] for col in cursor.description]
     return [
         dict(zip(columns, row))
@@ -11,9 +11,7 @@ def dictfetchall(cursor):
 
 
 def count_data():
-    """
-    Количество заявок в каждом месяце
-    """
+    """Количество заявок в каждом месяце"""
     with connection.cursor() as cursor:
         cursor.execute(
             """
@@ -27,9 +25,7 @@ def count_data():
 
 
 def last_data():
-    """
-    Последнюю заявку по клиенту
-    """
+    """Последняя заявка по клиенту"""
     with connection.cursor() as cursor:
         cursor.execute(
             """
@@ -42,9 +38,7 @@ def last_data():
 
 
 def client_approved():
-    """
-    Клиенты которые завели заявки на другой продукт после одобрения
-    """
+    """Клиенты которые завели заявки на другой продукт после одобрения"""
     with connection.cursor() as cursor:
         cursor.execute(
             """

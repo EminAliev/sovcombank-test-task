@@ -8,6 +8,7 @@ from changelog.mixins import ChangeloggableMixin
 
 
 def journal_save_handler(sender, instance, created, **kwargs):
+    """Функция для контроля над созданием новой записи и редактирования существующей """
     if isinstance(instance, ChangeloggableMixin):
         loggedIn = LoggedInUser()
         last_saved = get_last_saved(loggedIn.request, instance)
@@ -23,6 +24,7 @@ def journal_save_handler(sender, instance, created, **kwargs):
 
 
 def journal_delete_handler(sender, instance, using, **kwargs):
+    """Функция для контроля на удаление записи"""
     if isinstance(instance, ChangeloggableMixin):
         loggedIn = LoggedInUser()
         last_saved = get_last_saved(loggedIn.request, instance)
