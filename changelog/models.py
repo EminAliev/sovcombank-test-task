@@ -23,7 +23,6 @@ class ChangeLog(models.Model):
         choices=TYPE_ACTION_ON_MODEL, max_length=50, verbose_name=u'Действие', null=True)
     data = JSONField(verbose_name=u'Изменяемые данные модели', default=dict)
 
-
     class Meta:
         ordering = ('changed',)
         verbose_name = 'Логи'

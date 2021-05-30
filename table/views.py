@@ -2,8 +2,9 @@ import csv
 from datetime import datetime
 
 import xlwt
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django_filters.views import FilterMixin
@@ -38,20 +39,44 @@ class DataCreateView(CreateView):
     success_url = '/'
     fields = ['product', 'phone_number', 'solution', 'comment']
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(DataCreateView, self).form_valid(form)
 
-class DataUpdateView(UpdateView):
+
+class DataUpdateView(PermissionRequiredMixin, UpdateView):
     """Изменение заявки"""
     model = Data
     template_name = 'update.html'
+    permission_required = 'table.change_data'
     fields = ['product', 'phone_number', 'solution', 'comment']
     success_url = '/'
 
+    def get_context_data(self, **kwargs):
+        kwargs['update'] = True
+        return super().get_context_data(**kwargs)
 
-class DataDeleteView(DeleteView):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.user != kwargs['instance'].author:
+            return self.handle_no_permission()
+        return kwargs
+
+
+class DataDeleteView(PermissionRequiredMixin, DeleteView):
     """Удаление заявки"""
     model = Data
     template_name = 'delete.html'
+    permission_required = 'table.delete_data'
     success_url = '/'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.request.user != self.object.author:
+            return self.handle_no_permission()
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
 
 
 def export_xls(request):

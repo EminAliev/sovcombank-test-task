@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.signals import post_save, post_delete
@@ -30,6 +31,7 @@ class Data(ChangeloggableMixin, models.Model):
                                     help_text='Номер телефона в формате 9xxxxxxxxx')
     solution = models.CharField('Решение', choices=SOLUTION_CHOICES, max_length=20, blank=True, null=True)
     comment = models.TextField('Комментарий', blank=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор заявки')
 
     class Meta:
         verbose_name = 'Заявка'
